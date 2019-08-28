@@ -2,7 +2,7 @@ provider "cloudflare" {
 }
 
 resource "cloudflare_record" "node_a" {
-  count = "${length(var.nodes)}"
+  count = "${var.num_nodes}"
 
   domain = "${var.cloudflare_zone}"
   name = "${element(keys(var.nodes), count.index)}"
@@ -13,7 +13,7 @@ resource "cloudflare_record" "node_a" {
 }
 
 resource "cloudflare_record" "cname" {
-  count = "${length(var.cnames)}"
+  count = "${var.num_cnames}"
 
   domain = "${var.cloudflare_zone}"
   name = "${element(keys(var.cnames), count.index)}"
