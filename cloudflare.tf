@@ -1,8 +1,5 @@
 provider "cloudflare" {
-    email = "${var.cloudflare_email}"
-    token = "${var.cloudflare_token}"
 }
-
 
 resource "cloudflare_record" "node_a" {
   count = "${length(var.nodes)}"
