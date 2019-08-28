@@ -1,13 +1,36 @@
-## repo-template
-The purpose of this project is to provide  a template for new open source repositories.
+## terraform-openshift-dsncerts
 
-This repository contains some example best practices for open source repositories, including [LICENSE](LICENSE) file, boilerplate [README.md](README.md),  [CONTRIBUTING.md](CONTRIBUTING.md), and [MAINTAINERS.md](MAINTAINERS.md) files. These may be copied into a new or existing project to make it easier for developers not on a project team to collaborate.
+This is meant to be used as a module, make sure your module implementation sets all the variables in its terraform.tfvars file.
 
-**NOTE: While this boilerplate project uses the Apache 2.0 license, when
-establishing a new repo using this template, please use the
-license that was approved for your project.**
+```terraform
+module "dns" {
+    source                   = "github.com/ibm-cloud-architecture/terraform-dns-cloudflare.git"
 
-**NOTE: This repository has been configured with the DCO bot. When you set up
-a new repository that uses the Apache license, you should use the DCO to manage
-contributions. The DCO bot will help enforce that. Please contact one of the
-IBM GH Org stewards.**
+    cloudflare_email         = "${var.cloudflare_email}"
+    cloudflare_token         = "${var.cloudflare_token}"
+    cloudflare_zone          = "my-domain.com"
+
+    nodes = {
+        "node_a.my-domain.com" = "192.168.0.1",
+        "node_b.my-domain.com" = "192.168.0.2"
+    }
+
+    cnames = {
+        "my-domain-alias.my-domain.com" = "my-real-loadbalancer.my-domain.com"
+    }
+}
+```
+
+## Module Inputs Variables
+
+|Variable Name|Description|Default Value|Type|
+|-------------|-----------|-------------|----|
+|cloudflare_email|Cloudflare Email Login|-|string|
+|cloudflare_token|Cloudflare API Token|-|string|
+|cloudflare_zone|DNS Zone to register VMs on|"${module.infrastructure.domain}"|string|
+|nodes|nodes to create A records for, one-to-one mapping|-|map|
+|cnames|cnames records, one-to-one mapping|-|map|
+
+
+## Module Output
+This module produces no output
