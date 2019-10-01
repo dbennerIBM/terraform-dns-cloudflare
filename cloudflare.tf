@@ -4,7 +4,7 @@ provider "cloudflare" {
 resource "cloudflare_record" "node_a" {
   count = "${var.num_nodes}"
 
-  domain = "${var.cloudflare_zone}"
+  zone_id = "${var.cloudflare_zone}"
   name = "${element(keys(var.nodes), count.index)}"
   value = "${element(values(var.nodes), count.index)}"
 
@@ -15,7 +15,7 @@ resource "cloudflare_record" "node_a" {
 resource "cloudflare_record" "cname" {
   count = "${var.num_cnames}"
 
-  domain = "${var.cloudflare_zone}"
+  zone_id = "${var.cloudflare_zone}"
   name = "${element(keys(var.cnames), count.index)}"
   value = "${element(values(var.cnames), count.index)}"
 
